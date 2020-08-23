@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>Webslesson Tutorial | JSON - Dynamic Dependent Dropdown List using Jquery and Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="//cdn.sstatic.net/Sites/stackoverflow/all.css?v=8c7d44a438e6">  -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <br /><br />
+    <div class="container" style="width:600px;">
+        <h2 align="center">JSON - Dynamic Dependent Dropdown List using Jquery and Ajax</h2><br /><br />
+        <h5>Use Name option tag to select the name of the item and use submit to submit the item in the dropdown</h5><br>
+        <h5>for again using again select the name</h5>
+
+        <select name="id" id="id" class="form-control input-lg">
+            <option value="">Select id</option>
+        </select>
+        <br />
+        <select name="shortname" id="shortname" class="form-control input-lg">
+            <option value="">Select shortname</option>
+        </select>
+        <br />
+        <select name="name" id="name" class="form-control input-lg">
+            <option value="">Select name</option>
+        </select>
+        <br>
+        <select name="description" id="description" class="form-control input-lg">
+            <option value="">Select description</option>
+        </select>
+        <br>
+        <select name="pricesmall" id="pricesmall" class="form-control input-lg">
+            <option value="">Select price small</option>
+        </select>
+        <br>
+        <select name="pricelarge" id="pricelarge" class="form-control input-lg">
+            <option value="">Select price large</option>
+        </select>
+        <br>
+        <select name="smallportionname" id="smallportionname" class="form-control input-lg">
+            <option value="">Select small portion name</option>
+        </select>
+        <br>
+        <select name="largeportionname" id="largeportionname" class="form-control input-lg">
+            <option value="">Select large portion name</option>
+        </select>
+        <br>
+        <button type="submit" class="btn btn-success" id="add">Submit</button>
+    </div>
+    <div class="tablevent">
+        <table class="table">
+            <thead>
+
+                <th scope="col">id</th>
+                <th scope="col">short_name</th>
+                <th scope="col">name</th>
+                <!-- <th scope="col">description</th> -->
+                <!-- <th scope="col">price small</th>
+                <th scope="col">price large</th>
+                <th scope="col">small portion name</th>
+                <th scope="col">large portion name</th> -->
+            </thead>
+            <tbody id="addeveent">
+                <tr>
+                    <td id="tid"></td>
+                    <td id="tsname"></td>
+                    <td id="tname"></td>
+                    <!-- <td id="tdesc" style='width:40%'></td> -->
+                    <!-- <td id="tpsmall"></td>
+                    <td id="tplarge"></td>
+                    <td id="tspname"></td>
+                    <td id="tlpname"></td> --> -->
+
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</body>
+
+</html>
+<script>
+    $(document).ready(function () {
+        load_json_data('name');
+        function load_json_data(param_name, param_shortname, param_description, param_id, param_pricesmall, param_pricelarge, param_smallportionname, param_largeportionname) {
+            var html_code_id = '';
+            var html_code_shortname = '';
+            var html_code_name = '';
+            var html_code_description = '';
+            var html_code_pricesmall = '';
+            var html_code_pricelarge = '';
+            var html_code_smallportionname = '';
+            var html_code_largeportionname = '';
+            $.getJSON('text.json', function (data) {
+                html_code_name += '<option value="">Select ' + param_name + '</option>';
+                html_code_id += '<option value ="">Select id</option>'
+                $.each(data, function (key, value) {
+                    $.each(value, function (key, val) {
+                        if (param_name == 'name') {
+                            html_code_name += '<option value="' + val.name + '">' + val.name + '</option>';
+                            html_code_id += '<option value = "' + val.id + '">' + val.id + '</option>';
+                            // param_id = 'id';
+
+                        }
+
+                    }); $('#' + param_name).html(html_code_name);
+                    $('#' + param_id).html(html_code_id);
+
+
+
+                });
+
+            });
+
+        }
+        function load_other_data(val_name, param_name, param_shortname, param_description, param_id, param_pricesmall, param_pricelarge, param_smallportionname, param_largeportionname) {
+            var html_code_id = '';
+            var html_code_shortname = '';
+            var html_code_name = '';
+            var html_code_description = '';
+            var html_code_pricesmall = '';
+            var html_code_pricelarge = '';
+            var html_code_smallportionname = '';
+            var html_code_largeportionname = '';
+            $.getJSON('text.json', function (data) {
+                // html_code_id += '<option value ="">Select id</option>';
+                $.each(data, function (key, value) {
+                    $.each(value, function (key, val) {
+                        if (param_name == 'name') {
+                            if (val.name == val_name) {
+                                $('#id').html('<option value="' + val.id + '">' + val.id + '</option>');
+                                $('#shortname').html('<option value="' + val.short_name + '">' + val.short_name + '</option>')
+                                $('#description').html('<option value=""' + val.description + '">' + val.description + '</option>');
+                                $('#pricesmall').html('<option value=""' + val.price_small + '">' + val.price_small + '</option>');
+                                $('#pricelarge').html('<option value=""' + val.price_large + '">' + val.price_large + '</option>');
+                                $('#smallportionname').html('<option value=""' + val.small_portion_name + '">' + val.small_portion_name + '</option>')
+                                $('#largeportionname').html('<option value=""' + val.large_portion_name + '">' + val.large_portion_name + '</option>')
+                            }
+
+
+                        }
+
+
+
+                    });
+
+
+
+
+                });
+
+
+            });
+
+        }
+
+
+
+
+
+
+
+        $(document).on('change', '#name', function () {
+            var name = $(this).val();
+            if (name != '') {
+                $('#name').html('<option value = "' + name + '">' + name + '</option>')
+                // load_json_data('description', 'shortname', 'name', 'id', 'pricesmall', 'pricelarge', 'smallportionname', 'largeportionname')
+                load_other_data(name, 'name', 'shortname', 'description', 'id', 'pricesmall', 'pricelarge', 'smallportionname', 'largeportionname');
+
+
+            }
+        })
+        $(document).on('click', '#add', function () {
+            let element_id = document.createElement('td');
+            let element_sname = document.createElement('td');
+            let element_name = document.createElement('td');
+            let element_description = document.createElement('td');
+            let element_psmall = document.createElement('td');
+            let element_plarge = document.createElement('td');
+            let element_spname = document.createElement('td');
+            let element_lpname = document.createElement('td');
+            let element_newline = document.createElement('tr');
+            var val_id = $('#id').val();
+            var val_sname = $('#shortname').val();
+            var val_name = $('#name').val();
+            var val_description = $('#description').val();
+            var val_psmall = $('#pricesmall').val();
+            var val_plarge = $('#pricelarge').val();
+            var val_spname = $('#smallportionname').val();
+            var val_lpname = $('#largeportionname').val();
+            var tx_id = $('<td></td>').text(val_id);
+            var tx_sname = $('<td></td>').text(val_sname);
+            var tx_name = $('<td></td>').text(val_name);
+            var tx_description = $('<td></td>').text(val_description);
+            var tx_psmall = $('<td></td>').text(val_psmall);
+            var tx_plarge = $('<td></td>').text(val_plarge);
+            var tx_spname = $('<td></td>').text(val_spname);
+            var tx_lpname = $('<td></td>').text(val_lpname);
+            $('#addeveent').append(element_newline);
+            $('#addeveent').append(tx_id);
+            $('#addeveent').append(tx_sname);
+            $('#addeveent').append(tx_name);
+            // $('#addeveent').append(tx_description);
+            // $('#addeveent').append(val_psmall);
+            // $('#addeveent').append(val_plarge);
+            // $('#addeveent').append(val_spname);
+            // $('#addeveent').append(val_lpname);
+           
+           
+            load_json_data('name');
+
+        })
+    })
+
+
+
+</script>
